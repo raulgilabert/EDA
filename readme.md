@@ -39,3 +39,7 @@ for (auto w : words) {
   ...
 }
 ```
+
+## Priority queue
+
+Los elementos son añadidos a la cola en base a una prioridad y no en base al orden de entrada. Técnicamente no es un contenedor, sino que es un adaptador construido por encima de un contenedor con iteradores de acceso aleatorio, por ejemplo un vector.
