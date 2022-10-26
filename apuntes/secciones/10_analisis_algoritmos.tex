@@ -1,0 +1,206 @@
+\chapter{Análisis de algoritmos}
+
+Un algoritmo es un proceso computacional bien definido que toma un valor o
+conjunto de valores y produce un valor o conjunto de valores, es decir,
+convierte una entrada en una salida.
+
+El análisis de un algoritmo se basa en sacar el tiempo de ejecución del
+algoritmo en base al tamaño de la entrada de este. El tamaño de la entrada
+depende del problema que se esté tratando, pero en la gran mayoría de
+problemas se suele usar como medida el número de elementos de la entrada, como
+puede ser el tamaño de un array. El tiempo de ejecución de un algorimo suele
+ser la cantidad de pasos que tiene que ejecutar el programa para terminarlo.
+
+Para analizar los algoritmos siempre se tendrá en cuenta el peor caso de
+ejecución de estem ya que eso permite que se asegure que el algoritmo nunca
+tardará más que el definido por este cálculo. Además, el peor caso suele
+ocurrir con frecuencia, como puede ser el caso de una búsqueda de un elemento
+inexistente en la estructura de datos.
+
+
+Por ejemplo, en un Insertion Sort, el mejor caso se puede expresar con $an +
+b$, siendo $a$ y $b$ constantes del algoritmo y $n$ el tamaño de la entrada,
+siendo este caso la situación en la que la estructura de datos introducida ya
+esté ordenada correctamente. En cambio, el peor caso, se puede expresar con
+$an^2 + bn + c$, siendo $a$, $b$ y $c$ constantes del algoritmo y $n$ el tamaño
+de la entrada, siendo en esta situación el caso de que la entrada esté ordenada
+de forma decreciente.
+
+\section{Factor de crecimiento}
+Si ya en el ejemplo anterior se ignoró el coste actual de cada instrucción
+usando constantes para estas, en el análisis de algoritmos en realidad además
+de ignorar eso se ignoran las demás constantes, dejando solo el factor de
+crecimiento (n). Además, como ya se ha dicho antes, se usa únicamente el peor
+caso, quedando que el Insertion Sort tiene un coste de $\Theta(n^2)$.
+
+De esta manera se considera que un algoritmo es más eficiente que otro si el
+factor de crecimiento es menor. Aun así por el tema de las constantes que se
+ignoran puede ser que un algoritmo con un factor de crecimiento mayor tarde
+menos con entradas pequeñas, lo que provoca que a veces, en el caso de los
+algoritmos de ordenación, dependiendo del tamaño de la entrada a ordenar sea
+preferible usar un algoritmo menos eficiente que otro.
+
+\section{Orden de magnitud}
+El orden de magnitud es necesario para poder tener una notación que permita
+expresar el peor caso de ejecución del algoritmo y que sea independiente de
+constantes multiplicativas. Está notación es la llamada O grande, de forma que
+teniendo una función $f$, $\mathcal{O}(f)$ representa la clase de funciones que
+``crecen como f o más lentamente''.
+
+Formalmente $g \in \mathcal{O}(f)$ si existen c $> 0$ y $n_0 \in \mathbb{N}$
+tales que $\forall_{n \geq n_0} g(n) \leq c \cdot f(n)$  
+
+\section{Notación asintótica}
+
+Este tipo de notación permite la clasificación de las funciones en base al
+crecimiento de estas ``a la larga''. De esta forma se centra en el
+comportamiento de las funciones para entradas largas. 
+
+\subsection{Notación $\mathcal{O}$}
+
+La notación $\mathcal{O}$ se usa cuando se puede acotar f(n) por encima, es
+decir: $f(n) \in \mathcal{O}(g(n))$ si existe una constante $c$ de forma que
+$f(n) < c \cdot g(n)$ para una $n$ lo suficientemente grande, es decir, $n >
+n_0$.
+
+\subsection{Notación $\Omega$}
+
+De forma similar a la notación $\mathcal{O}$, la notación $\Omega$ acota la
+función f(n) solo por un lado, en este caso, la acota por debajo, es decir, que
+$f(n) \in \Omega(g(n))$ si existe una constante $c$ de forma que $c \cdot g(n)
+< f(n)$ para una $n$ lo suficientemente grande, es decir, para $n > n_0$.
+
+\subsection{Notación $\Theta$}
+
+Esta notación se usa para denotar que $f(n) \in \Theta(g(n))$ si existen dos
+constantes $c_1$ y $c_2$ de forma que $c_1 \cdot g(n) < f(n) < c_2 \cdot g(n)$
+para una $n$ lo suficientemente grande, es decir, para $n > n_0$. Aunque
+$\Theta(g(n))$ es un conjunto y lo correcto es hace $f(n) \in \Theta(g(n))$
+vamos a usar también $f(n) = \Theta(g(n))$.
+
+En base a lo visto en estos puntos, se puede ver que $f(n) \in \Theta(g(n))
+\iff f(n) \in \mathcal{O}(n) \land f(n) \in \Omega(g(n))$
+
+\subsection{Propiedades}
+
+\begin{itemize}
+    \item $f(n) \in \mathcal{O}(f(n))$
+
+        $f(n) \in \Theta(f(n))$
+
+        $f(n) \in \Omega(f(n))$ 
+
+    \item $h(n) \in \mathcal{O}(g(n)) \land g(n) \in \mathcal{O}(f(n))
+        \Rightarrow h(n) \in \mathcal{O}(f(n))$
+        
+        $h(n) \in \Theta(g(n)) \land g(n) \in \Theta(f(n)) \Rightarrow h(n) \in
+        \Theta(g(n))$
+
+        $h(n) \in \Omega(g(n)) \land g(n) \in \Omega(f(n)) \Rightarrow h(n) \in
+        \Omega(g(n))$
+
+    \item $f(n) \in \Theta(g(n)) \iff g(n) \in \Theta(f(n))$
+
+        $f(n) \in \Omega(g(n)) \iff g(n) \in \mathcal{O}(f(n))$
+
+        $f(n) \in \mathcal{O}(g(n)) \iff g(n) \in \Omega(f(n))$
+
+    \item $g(n) \in \mathcal{O}(f(n)) \iff \mathcal{O}(g(n)) \subseteq
+        \mathcal{O}(f(n))$
+        
+    \item $g_1(n) \in \mathcal{O}(f_1(n)) \land g_2(n) \in \mathcal{O}(f_2(n))
+        \Rightarrow g_1(n) + g_2(n) \in \mathcal{O}(f_1(n) + f_2(n)) =
+        \mathcal{O}(max(f_1(n), f_2(n)))$
+
+    \item $g_1 \in \mathcal{O}(f_1) \land g_2 \in \mathcal{O}(f_2) \Rightarrow
+        g_1 \cdot g_2 \in \mathcal{O}(f_1 \cdot f_2)$
+
+\end{itemize}
+
+
+\subsection{Formas de crecimiento}
+
+\begin{itemize}
+    \item Constante $\Theta(1)$ Número par o impar.
+    \item Logarítmico $\Theta(\log{n})$ Búsqueda binaria.
+    \item Radical $\Theta(\sqrt{n})$ Test básico de primalidad.
+    \item Lineal $\Theta(n)$ Búsqueda secuencial en un vector.
+    \item Quasilineal $\Theta(n \log{n})$ Ordenación eficiente de un vector.
+    \item Cuadrático $\Theta(n^2)$ Suma de dos matrices cuadradas de tamaño $n
+        \times n$.
+    \item Cúbico $\Theta(n^3)$ Multiplicación de dos matrices cuadradas de
+        tamaño $n \times n$.
+    \item Polinómico $\Theta(n^k)$ Para $k \geq 1$ constante, combinaciones de
+        $n$ elementos cogidos de $k$ en $k$.
+    \item Exponencial $\Theta(k^n)$ Para $k$ constante, búsqueda en un espacio
+        de configuraciones de anchura $k$ y altura $n$.
+\end{itemize}
+
+\section{Coste de los algoritmos}
+
+Una operación elemental (asignación de tipo básico, incremento o decremente de
+alguna variable de tipo básico, operaciones aritméticas, lectura o escritura de
+tipo básico, comparación, acceso a componentes de un vector, etc.) tiene coste
+$\Theta(1)$. Sabiendo esto, evaluar una expresión tiene un coste igual a la
+suma de los constes de las operaciones que se realizan. Además el coste de una
+operación \texttt{return E} es el de analizar E y copiar el resultado. Copiar
+un vector de tamaño $n$ tiene un conste $\Theta(n)$. El paso por referencia de
+parámetros tiene un coste $\Theta(1)$, a diferencia del pasos de parámetros
+copiando que el coste depende del tipo de parámetro que es.
+
+\subsection{Algoritmos no recursivos}
+
+Si el coste de un fragmento es $F_1$ es $C_1$ y el de un fragmento $f_2$ es
+$C_2$ entonces el coste de ejecutar una secuencia con los dos parámetros es de
+$C_1 + C_2$.
+
+Si el coste de $F_1$ es $C_1$ y de $F_2$ es $C_2$ y de $B$ es $D$, entonces
+evaluar \texttt{if ($B$) $F_1$; else $F_2$} es $D + C_1$ en caso de que $B$ sea
+cierto y $D + C_2$ en caso de que $B$ sea falso. De forma que el coste en el
+peor caso es $D + max(C_1, C_2)$.
+
+Si el coste de $F$ durante la k-ésima iteración es $C_k$, el de evaluar $B$ es
+$D_k$ y el número de iteraciones es $N$ entonces el coste de \texttt{while($B$)
+F;} es $(\sum_{k=1}^{N} C_k + D_k) + D_{n + 1}$ (N veces la evaluación de la
+condición y la ejecución del contenido y una evaluación final que no entra en
+el bucle).
+
+\subsection{Algoritmos recursivos}
+
+El coste de un algoritmo recursivo se expresa en forma de recurrencia, es
+decir, una ecuación o inecuación que describe una función expresada en términos
+de su valor para entradas más pequeñas.
+
+Para encontrar la recurrencia que describe el coste de un algoritmo recursivo
+se han de determinal el parámetro de recursión $n$ (normalmente el tamaño de la
+entrada) y el coste del caso inductivo (número de llamadas recursivas, valores
+del parámetro recursivo de las llamadas y coste de los cálculos extra no
+recursivos). De esta manera se ve que hay dos tipos de recurrencia en base a su
+coste:
+
+\begin{itemize}
+    \item Sustractiva
+
+        Siendo del tipo
+        \begin{equation*}
+            T(n) =
+            \Biggl\{
+                \begin{array}{lr}
+                    f(n), & \text{si } 0 \leq n < n_0 \\
+                    a \cdot T(n - c) + g(n), & \text{si } n \geq n_0
+                \end{array}
+        \end{equation*}
+
+    \item Divisora
+
+        Siendo del tipo
+        \begin{equation*}
+            T(n) =
+            \Biggl\{
+                \begin{array}{lr}
+                    f(n), & \text{si } 0 \leq n < n_0 \\
+                    a \cdot T(n/b) + g(n), & \text{si } n \geq n_0
+                \end{array}
+        \end{equation*}
+\end{itemize}
+

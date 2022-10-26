@@ -1,0 +1,258 @@
+\chapter{Divide y vencerás}
+
+La estrategía de divide y vencerás para resolver problemas mediante algoritmos
+se basa tres pasos:
+
+\begin{enumerate}
+    \item Dividir el problema en subproblemas, es decir, casos más pequeños del
+        mismo problema
+    \item Resolver los subproblemas recursivamente
+    \item Combinar las respuestas de forma adecuada
+\end{enumerate}
+
+La cosa es que la llamada recursiva solo se produce si el subproblema es
+demasiado grande (en un algoritmo de ordenación si hay muchos elementos para
+ordenar) pero en caso que no, se entra en el caso base (en un algoritmo de
+ordenación, usar uno más eficiente para pocos elementos).
+
+Aunque lo parezca, los subproblemas no tienen por qué ser de una entrada que
+sea una fracción de la entrada original como puede ser en el caso de un
+algoritmo de recorrido de una estructura de datos elemento a elemento, de forma
+que la entrada recursiva sea de un tamaño inferior en 1 a la entrada del que
+hace la llamada.
+
+\section{Algoritmos}
+
+\subsection{Merge sort}
+
+El merge sort es un algoritmo que muestra muy bien el funcionamiento de la
+estrategia de divide y vencerás para hacer algoritmos. El merge sort se basa en
+dividir en dos mitades la entrada y ejecutar el mismo algoritmo sobre las dos
+divisiones. Al recibir la respuesta de estas dos nuevas ordenaciones va
+ordenando en una nueva estructura de datos en base comparar el primer elemento
+de cada división antes hecha y ordenada y añadiendo siempre el menor de estos.
+
+Hay una variante más eficiente en el tiempo que realiza el merge sort hasta un
+cierto tamaño de entrada que hace un insert sort que es más eficiente a partir
+de ese tamaño, de forma que se reduce el tiempo de ejecución del algoritmo.
+
+\subsection{Quick sort}
+
+El algoritmo de ordenación rápida (quick sort) es el algoritmo de ordenación
+genérico más rápido. Aunque el peor caso sea $\Theta(n^2)$, el caso promedio es
+$\Theta(n\log  n)$ y la eficiencia del bucle interno hace que sea el mejor
+algoritmo de ordenación en la práctica.
+
+El funcionamiento del algoritmo es el siguiente para un vector $t$ de mínimo de
+2 elementos:
+
+\begin{enumerate}
+    \item Escoge un elemento x de T
+    \item divide $T$ en en dos grupos diferentes entre sí $T_1$ y $T_2$ de
+        forma que se cuempla lo siguiente:
+        \begin{itemize}
+            \item $T_1$ contiene elementos $\leq x$ de $T$
+            \item $T_2$ contiene elementos $\geq x$ de $T$
+        \end{itemize}
+    \item Ordena $T_1$ y $T_2$ de forma recursiva
+    \item Devuelve $T_1$ seguido de $T_2$
+\end{enumerate}
+
+De esta manera se ve que el merge sort y el quick sort siguen la estrategia de
+divide y vencerás pero la llevan a cabo de formas distintas ya que el merge
+sort divide en subproblemas de forma directa y después hace una fusión de los
+vectores haciendo las comparaciones y en cambio, el quick sort produce las
+divisiones con comparaciones y después hace la fusión de elementos de forma
+directa.
+
+El problema que genera el quick sort es saber qué elemento $x$ hay que escoger
+del vector ya que puede producirse que se hagan subdivisiones del problema que
+sean innecesarias si se usara un criterio distinto para escoger el elemento
+pivot. El algoritmo original tomaba el primer elemento como pivot pero esto
+puede ser ineficiente dependiendo del valor que tenga y el del resto de
+elementos.
+
+De esta manera se crean 3 estrategias distintas que se pueden seguir para
+escoger el elemento pivot:
+
+\begin{itemize}
+    \item Escoger el primer elemento
+        Esto es aceptable si la entrada es totalmente aleatoria pero en casos
+        donde la entrada está totalmente ordenada el cualquier orden el
+        algoritmo tiene un coste $\Theta(n^2)$ y no hace ningún cambio en la
+        entrada.
+
+    \item Escoger un elemento aleatorio
+        De media suele dividir el problema en subproblemas similares pero no
+        siempre hace el algoritmo más rápido debido al coste de la generación
+        de números aleatorios
+
+    \item Escoger la mediana de los elementos
+        Es la mejor opción pero al ser demasiado cara se hace una alternativa
+        que produce un número que en muchos casos es una buena estimación de
+        esta. Esta alternativa es hacer la mediana de 3 elementos, siendo estos
+        el primero, el final y el central.
+\end{itemize}
+
+Al igual que pasa con el merge sort que para vectores muy pequeños es
+preferible usar un insert sort al ser este más eficiente en vectores pequeños,
+en este caso cuando el vector es de un tamaño entre 5 y 20 elementos.
+
+\subsection{Algoritmo de Karatsuba}
+El algoritmo de multiplicación que se estudia a nivel escolar tiene una
+eficiencia de $\Theta(n^2)$ siendo $n$ el número de dígitos de ambos números
+pero se encontró un algoritmo con un coste $\Theta(n^{\log_2 3})$, siendo el
+algoritmo el siguiente:
+
+Suponiendo que $x$ e $y$ son dos naturales de $n$ bits siendo $n$ par se
+dividen dividen tanto $x$ como $y$ en dos partes, como puede ser en este
+ejemplo:
+
+$$x = 10010111_2, y = 11001010_2$$
+$$x = 2^{n/2} x_I + x_D \Rightarrow x_I = 1001_2, x_D = 0111_2$$
+$$y = 2^{n/2} y_I + y_D \Rightarrow y_I = 1100_2, y_D = 1010_2$$
+
+De esta manera, el producto 
+
+$$xy = (2^{n/2}x_I + x_D)(2^{n_2}y_I + y_D)$$
+
+Se puede reescribir como
+
+$$xy = 2^n x_I y_I + 2^{n/2}(x_I y_D + x_D y_I) + x_D y_D$$
+
+De esta manera, un algoritmo que basado en esta expresión calculara
+recursivamente los productos tendría un coste $T(n) = 4T(n/2) + \Theta(n)$.
+
+Teniendo en cuenta que
+
+$$x_I y_D + x_D y_I = (x_I + x_D)(y_I + y_D) - x_I y_I - x_D y_D$$
+
+Tomamos
+
+$$a = x_I y_I, b = x_D y_D, c = (x_I + x_D)(y_I + y_D)$$
+
+Entonces la ecuación
+
+$$xy = 2^n x_I y_I + 2^{n/2}(x_I y_D + x_D y_I) + x_D y_D$$
+
+Se puede reescribir de esta manera
+
+$$2^n a + 2^{n/2}(c - a - b) + b$$
+
+De esta manera logramos que la multiplicación dependa solo de 3 subproductos,
+de forma que se da lugar a un algoritmo con coste $T(n) = 3T(n/2) + \Theta(n)$
+y por el teorema de recurrencias divisoras sabemos que $T(n) \in
+\Theta(n^{log_2 3}) \approx \Theta(n^{1.585})$.
+
+\subsection{Exponenciación rápida}
+
+El algoritmo iterativo evidente para calcular $x^n$ haría $\Theta(n - 1) =
+\Theta(n)$ multiplicaciones.
+
+Con un enfoque recursivo vemos que en caso de que $n$ sea par tenemos que 
+
+$$x^n = (x^{n/2})^2$$\\
+
+y si $n$ es impar tenemos que
+
+$$x^n = x^{n - 1} \cdot x = (x^{(n-1)/2})^2 \cdot x$$
+
+y el caso base que dice que
+
+$$x^0 = 1$$
+
+De esta manera, siguiendo estos casos se puede hacer un algoritmo con un coste
+definido por la recurrencia $T(n) = T(n/2) + \Theta(1)$, de forma que por el
+teorema maestro de recurrencias divisorias esto implica que $T(n) \in
+\Theta(\log n)$.
+
+\subsection{Algoritmo de Strassen}
+
+Tal y como se sabe, el producto de dos matrices $X$ e $Y$ de tamaño $x \times
+y$ es una matriz $Z$ de tamaño $n \times n$ de forma que
+
+$$Z_{ij} = \displaystyle\sum_{k = 1}^{n}X_{ik} Y_{kj}$$
+
+Es decir, $Z_{ij}$ es el producto de la fila $i$-ésima de $X$ por la columna
+$j$-ésima de $Y$.
+
+Este algoritmo tiene un coste de $\Theta(n^3)$ pero hay una alternativa con
+coste $\Theta/n^{\log_2 7} \approx \Theta(n^{2.81})$.
+
+Una primera idea que se puede tener es que el producto de matrices se puede
+hacer por bloques, de forma que dividiendo $X$ e $Y$ en cuatro cuadrantes cada
+uno nos queda que
+
+$$
+X = 
+\begin{bmatrix}
+    A & B \\
+    C & D
+\end{bmatrix},
+Y = 
+\begin{bmatrix}
+    E & F \\
+    G & H
+\end{bmatrix}
+$$
+
+De esta manera se puede ver que 
+
+$$
+XY =
+\begin{bmatrix}
+    A & B \\
+    C & D
+\end{bmatrix}
+\begin{bmatrix}
+    E & F \\
+    G & H
+\end{bmatrix}
+=
+\begin{bmatrix}
+    AE + BG & AF + BH \\
+    CE + DG & CF + DH
+\end{bmatrix}
+$$
+
+Y estos productos de matrices se pueden calcular de forma recursiva.
+
+De esta manera se ve que el coste de $T(n)$ es la suma de hacer 8 productos de
+matrices de tamaño $n/2$: 8T(n/2) y 4 sumas de matrices de tamaño $n/2$:
+$\Theta(n^2)$. Por tanto tenemos la recurrencia $T(n) = 8T(n/2) + \Theta(n^2)$
+que por el teorema de recurrencias divisoras tenemos que $T(n) \in
+\Theta(n^{log_2 8}) = \Theta(n^3)$. pero la cuestión es que el número de
+productos se puede reducir a 7 de forma que
+
+$$
+XY = 
+\begin{bmatrix}
+    P_5 + P_4 - P_2 + P_6 & P_1 + P_2 \\
+    P_3 + P_4 & P_1 + P_5 - P_3 - P_7
+\end{bmatrix}
+$$
+
+donde
+
+$$P_1 = A(F - H), P_2 = (A + B)H,$$
+$$P_3 = (C + D)E, P_4 = D(G - E),$$
+$$P_5 = (A + D)(E + H), P_6 = (B - D)(G + H),$$
+$$P_7 = (A - C)(E + F)$$
+
+De forma que nos queda
+
+
+$$P_5 + P_4 - P_2 + P_6 = (A + D)(E + H) + D(G - E) - (A + B)H + (B - D)(G +
+H) =$$
+$$AE + AH + DE + DH + DG - DE - HA - BH + BG - BH - DG - DH = AE + BG$$\\
+$$P_1 + P_2 = A(F - H) + (A + B)H = AF - AH + AH + BH = AF + BH$$\\
+$$P_3 + P_4 = (C + D)E + D(G - E) = CE + DE + DG - DE = CE + DG$$\\
+$$P_1 + P_5 - P_3 - P_7 = A(F - H) + (A + D)(E + H) - (C + D)E - (A - C)(E +
+F) =$$
+$$ AF - AH + AE + AH + DE + DH - CE - DE - AE - AF + CE + CF = DH + CF $$
+
+De forma que se cumplen las igualdades entre esta acumulación de productos
+sumados y restados entre sí y el contenido de las matrices en cuadrantes. De
+esta forma siguiendo este algoritmo que tiene solo 7 productos acabamos con un
+costo $T(n) = 7T(n/2) + \Theta(n^2)$ que por el teorema maestro de recurrencias
+divisoras tenemos que $T(n) \in \Theta(n^{\log_2 7}) \approx \Theta(n^{2.81})$.
